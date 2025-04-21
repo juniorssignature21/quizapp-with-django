@@ -12,6 +12,32 @@
 </head>
 <body>
     <div class="quiz-container">
+      {% if messages %}
+      {% for message in messages %}
+      <div
+        class="alert alert-primary alert-dismissible fade show"
+        role="alert"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+        <strong>
+          {{message}}
+        </strong> Alert Content
+      </div>
+      
+      <script>
+        var alertList = document.querySelectorAll(".alert");
+        alertList.forEach(function (alert) {
+          new bootstrap.Alert(alert);
+        });
+      </script>
+      
+      {% endfor %}
+      {% endif %}
         <form action="{% url "quiz:register_user" %}" method="post">
             {% comment %} {% csrf_token %} {% endcomment %}
             {% csrf_token %}
@@ -29,7 +55,7 @@
               </div> {% endcomment %}
               {{form.as_p}}
               
-              <button type="submit" id="restart-button" class="button">Login</button>
+              <button type="submit" id="restart-button" class="button">Register</button>
             </div>
           </div>
         </form>
