@@ -38,19 +38,18 @@ def calculate_score(request):
                     if selected_choice.is_correct:
                         # user_id.num_of_correct_choices =  selected_choice.is_correct
                         user_id.score += 2
+                        user_id.has_submitted = True
                         user_id.save()
-                        
-                        
-                        with open("./plugin/result.csv", 'w') as file:
-                            content = [
-                                ["Name", "Score"],
-                                [f"{request.user.first_name} {request.user.last_name}", f"{user_id.score}"]
-                            ]
-                            writer = csv.writer(file)
-                            writer.writerows(content)
                         
                 except quiz_models.Choices.DoesNotExist:
                     pass
+                
+            with open("./plugin/result.csv", 'a') as file:
+                content = [
+                    [f"{request.user.first_name} {request.user.last_name}", f"{user_id.score}"]
+                ]
+                writer = csv.writer(file)
+                writer.writerows(content)
                 
     return redirect(to="quiz:result_page")
 
