@@ -10,9 +10,11 @@
 </head>
 <body>
   <div class="quiz-container">
-    <h2>
-      Welcome, {{request.user.username|capfirst}}
-    </h2>
+    <center>
+      <h2>
+        Welcome, {{request.user.username|capfirst}}
+      </h2>
+    </center>
     <form action="{% url "quiz:calculate_score" %}" method="post">
 
       {% csrf_token %}
@@ -27,7 +29,9 @@
       {% comment %} <div class="progress-bar">
         <div class="progress-bar-fill" id="progress-fill" style="width: 20%"></div>
       </div> {% endcomment %}
-      <p class="progress-text">Question <span id="current-question"> {{q.id}} </span> of <span id="total-questions">5</span></p>
+      <p class="progress-text">Question <span id="current-question"> {{forloop.counter}} </span> of <span id="total-questions">
+        {{total_questions}}
+      </span></p>
       <div class="quiz-card">
         <h3 class="question" id="question-text">
           {{q.question_text}}

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"></link>
+
+</head>
+<body>
+    <div class="quiz-container">
+        <center>
+            <h1>
+                Welcome, {{request.user.username|capfirst}}
+             </h1>
+        </center>
+        {% for question in questions %}
+        <div id="results-section">
+            <div class="quiz-card">
+             <b>
+                Question:
+             </b>  {{question.question_text}}
+            </div>
+        </div>
+        <br>
+         <h4>
+           &nbsp; Options:
+        </h4>
+        {% for c in question.choices %}
+        <div id="results-section">
+            <div class="quiz-card">
+                {{c.option}}. {{c.choice_text}}
+                <br>
+               Correct: {{c.is_correct}}
+            </div>
+        </div>
+        
+        <br>
+        {% endfor %}
+        <a href="{% url 'quiz:edit_question' question.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+          {% endfor %}
+          <div class="add">
+            <a href="{% url "quiz:add_question" %}">
+                Add question
+              </a>
+          </div>
+    </div>
+</body>
+</html>

@@ -1,7 +1,9 @@
 asgiref==3.8.1
 distlib==0.3.9
 Django==5.2
+et_xmlfile==2.0.0
 filelock==3.18.0
+openpyxl==3.1.5
 platformdirs==4.3.7
 sqlparse==0.5.3
 tzdata==2025.2

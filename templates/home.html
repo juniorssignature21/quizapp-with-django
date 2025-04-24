@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"></link>
+
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="results-section">
+            <div class="quiz-card">
+              <center>
+                <h2 class="question">
+                    Welcome {{request.user.username}}
+                  </h2>
+              </center>
+              
+              <a href="{% url "quiz:quiz_page" %}" id="restart-button" class="button fw-bold" style="text-decoration: None;">
+                Start quiz
+              </a>
+              {% if user.is_instructor %}
+              <a href="{% url "quiz:question_list" user.id  %}" id="restart-button" class="button fw-bold" style="text-decoration: None;">
+                View Questions
+              </a>
+              {% endif %}
+            </div>
+          </div>
+    </div>
+</body>
+</html>
