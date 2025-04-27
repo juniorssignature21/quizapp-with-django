@@ -22,6 +22,10 @@
                 {{ form.non_field_errors }}
                 <div class="mb-3">
                     <label for="id_discipline" class="form-label">Discipline</label>
+                    {{ form.instructor|add_class:"form-select" }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_discipline" class="form-label">Discipline</label>
                     {{ form.discipline|add_class:"form-select" }}
                 </div>
                 <div class="mb-3">

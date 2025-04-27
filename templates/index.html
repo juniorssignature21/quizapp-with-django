@@ -14,8 +14,12 @@
       <h2>
         Welcome, {{request.user.username|capfirst}}
       </h2>
+      <br>
+      <div id="timer" class="alert alert-info text-center">
+        <h4>Time Remaining: <span id="time">1:00</span></h4>
+    </div>
     </center>
-    <form action="{% url "quiz:calculate_score" %}" method="post">
+    <form id="quizForm" action="{% url "quiz:calculate_score" %}" method="post">
 
       {% csrf_token %}
 
@@ -23,7 +27,7 @@
     <p class="quiz-subtitle">Test your knowledge of HTML, CSS, and JavaScript</p>
 
     <!-- Quiz section -->
-    {% for q in question %}
+    {% for q in page_obj %}
 
     <div id="quiz-section">
       {% comment %} <div class="progress-bar">
@@ -34,7 +38,7 @@
       </span></p>
       <div class="quiz-card">
         <h3 class="question" id="question-text">
-          {{q.question_text}}
+          {{q.question_text|linebreaks}}
         </h3>
         <div class="options" id="options-container">
           {% for c in q.choices.all %}
@@ -52,6 +56,31 @@
       
     </div>
     {% endfor %}
+
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+        {% comment %} <a href="?page=1" class="btn btn-sm btn-outline-primary">
+          &laquo; first
+        </a> {% endcomment %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-outline-primary">
+          Previous
+        </a>
+        {% endif %}
+        <span class="current">
+          Page {{ page_obj.number }} of {{page_obj.paginator.num_pages}}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-outline-primary">
+          Next
+        </a>
+        {% comment %} <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-sm btn-outline-primary">
+          Previous
+        </a> {% endcomment %}
+        {% endif %}
+      </span>
+    </div>
     <button type="submit" id="next-button" class="button">Sumbit</button>
       
     </form>
@@ -78,7 +107,99 @@
       </div>
     </div> {% endcomment %}
   </div>
-<script>
+  <script>
+    // Set the time limit (10 minutes in milliseconds)
+    const TIME_LIMIT = 1 * 60 * 1000;
+    let timer;
+    let startTime;
+    
+    function startTimer() {
+        startTime = new Date().getTime();
+        timer = setInterval(updateTimer, 1000);
+        
+        // Load saved time if exists
+        const savedTime = localStorage.getItem('quizTimeLeft');
+        if (savedTime) {
+            startTime = new Date().getTime() - (TIME_LIMIT - parseInt(savedTime));
+        }
+    }
+    
+    function updateTimer() {
+        const currentTime = new Date().getTime();
+        const elapsedTime = currentTime - startTime;
+        const remainingTime = TIME_LIMIT - elapsedTime;
+        
+        // Save progress periodically
+        if (elapsedTime % 5000 < 1000) { // Every ~5 seconds
+            localStorage.setItem('quizTimeLeft', remainingTime);
+        }
+        
+        // Stop if time is up
+        if (remainingTime <= 0) {
+            clearInterval(timer);
+            localStorage.removeItem('quizTimeLeft');
+          // Update UI to show time expired
+            document.getElementById('time').textContent = "00:00";
+            document.getElementById('timer').className = 'alert alert-danger text-center';
+            document.getElementById('timer').innerHTML = '<h4>Time Expired! Submitting your quiz...</h4>';
+
+            //Immediately submit the form without alert
+            setTimeout(() => {
+                document.getElementById('quizForm').submit()
+            }, 1000);
+
+            //alert("Time's up! Your quiz will be submitted automatically.");
+            //document.getElementById('quizForm').submit();
+            return;
+        }
+        
+        // Update display
+        const minutes = Math.floor(remainingTime / (60 * 1000));
+        const seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
+        document.getElementById('time').textContent = 
+            `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        // Visual warnings
+        const timerElement = document.getElementById('timer');
+        if (remainingTime <= 60000) { // Last minute
+            timerElement.className = 'alert alert-danger text-center';
+            timerElement.style.animation = 'blink 1s infinite';
+        } else if (remainingTime <= 180000) { // Last 3 minutes
+            timerElement.className = 'alert alert-warning text-center';
+        }
+    }
+    
+    // Start timer when page loads
+    window.addEventListener('load', startTimer);
+    
+    // Clear timer on submit
+    document.getElementById('quizForm').addEventListener('submit', function() {
+        clearInterval(timer);
+        localStorage.removeItem('quizTimeLeft');
+    });
+    
+    // Blink animation for last minute
+    document.head.insertAdjacentHTML('beforeend', `
+    <style>
+        @keyframes blink { 50% { opacity: 0.5; } }
+    </style>
+    `);
+    </script>
+    
+    <style>
+    #timer {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+        position: sticky;
+        top: 10px;
+        z-index: 1000;
+    }
+    #time {
+        font-weight: bold;
+        font-size: 1.3em;
+    }
+    </style>
+{% comment %} <script>
   //Next question
   function nextQuestion() {
     if (currentQuestion < quizQuestions.length - 1) {
@@ -88,7 +209,8 @@
       showResults();
     }
   }
-</script>
+</script> {% endcomment %}
+
   <!-- <script>
     // Quiz data
     const quizQuestions = [

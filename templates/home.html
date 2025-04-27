@@ -14,7 +14,7 @@
             <div class="quiz-card">
               <center>
                 <h2 class="question">
-                    Welcome {{request.user.username}}
+                    Welcome {{request.user.username|capfirst}}
                   </h2>
               </center>
               
@@ -24,6 +24,9 @@
               {% if user.is_instructor %}
               <a href="{% url "quiz:question_list" user.id  %}" id="restart-button" class="button fw-bold" style="text-decoration: None;">
                 View Questions
+              </a>
+              <a href="{% url "quiz:add_question"%}" id="restart-button" class="button fw-bold" style="text-decoration: None;">
+                Add Questions
               </a>
               {% endif %}
             </div>

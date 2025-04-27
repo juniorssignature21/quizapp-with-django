@@ -68,6 +68,10 @@
                     <h5 class="card-title">Question Details</h5>
                     {{ form.non_field_errors }}
                     <div class="mb-3">
+                        <label for="id_discipline" class="form-label"></label>
+                        {{ form.instructor|add_class:"form-select" }}
+                    </div>
+                    <div class="mb-3">
                         <label for="id_discipline" class="form-label">Discipline</label>
                         {{ form.discipline|add_class:"form-select" }}
                     </div>
@@ -90,7 +94,7 @@
             <div class="col-md-2">
                 <label class="form-label">Option</label>
                 {{ choice_form.option|add_class:"form-select" }}
-            </div>
+            </div>-
             <div class="col-md-4 d-flex align-items-end">
                 <div class="form-check">
                     {{ choice_form.is_correct }}

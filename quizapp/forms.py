@@ -19,8 +19,8 @@ class UserRegistrationForm(UserCreationForm):
         
 class QuestionForm(forms.ModelForm):
     discipline = forms.ModelChoiceField(queryset=Discipline.objects.all(), widget=forms.Select(attrs={"class":"form-control rounded"}), required=True)
-    instructor = forms.ModelChoiceField(queryset=AppUser.objects.all(), widget=forms.TextInput(attrs={"value":"{{request.user}}"}))
-    question_text = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control rounded", "placeholder": "Question"}), required=True)
+    instructor = forms.ModelChoiceField(queryset=AppUser.objects.all(), widget=forms.HiddenInput(attrs={"value":"{{request.user}}"}))
+    question_text = forms.CharField(widget=forms.Textarea(attrs={"class":"form-control rounded", "placeholder": "Question", "rows":3}), required=True)
     class Meta:
         model = Question
         fields = [ "instructor",'discipline', 'question_text']

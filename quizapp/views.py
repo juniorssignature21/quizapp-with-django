@@ -8,6 +8,7 @@ from .forms import UserRegistrationForm, QuestionForm, ChoiceFormSet
 import os
 import openpyxl
 from openpyxl import Workbook
+from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required(login_url="quiz:login_user")
@@ -21,14 +22,26 @@ def home(request):
     if user.has_submitted:
         return redirect("quiz:result_page")
     
+    # filter questions according to users' discipline
     question = quiz_models.Question.objects.filter(discipline=user_discipline).order_by("id")
+    
+    # create paginator with 10 questions per page
+    paginator = Paginator(question, 10)
+    
+    # get current page number from request
+    page_number = request.GET.get('page')
+    
+    # get the page object
+    page_obj = paginator.get_page(page_number)
+    
     total_questions= question.count()
     # choice = quiz_models.Choices.objects.filter(question=question)
     
     context = {
         "question": question,
         "total_questions": total_questions,
-        "user":user
+        "user":user,
+        "page_obj":page_obj,
         # "choice": choice 
         
     }
@@ -81,6 +94,9 @@ def calculate_score(request):
         if not user_already_written:
             ws.append([user.get_full_name(), user.score, str(user.discipline)])
             wb.save(xlsx_path)
+     # Clear the timer storage
+    if 'quizTimeLeft' in request.session:
+        del request.session['quizTimeLeft']
 
     return redirect("quiz:result_page")
 
@@ -165,6 +181,9 @@ def add_question(request):
                 
                 messages.success(request, "Question added successfully!")
                 return redirect('quiz:index')
+            else:
+                print("form error: ", form.errors)
+                print("formset error: ", formset.errors)
 
         else:
             # Initialize empty forms
@@ -215,6 +234,9 @@ def edit_question(request, question_id):
                 
                 messages.success(request, "Question updated successfully!")
                 return redirect('quiz:index')
+            else:
+                print("form error: ", form.errors)
+                print("formset error: ", formset.errors)
 
         else:
             form = QuestionForm(instance=question)
