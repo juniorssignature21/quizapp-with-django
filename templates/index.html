@@ -16,7 +16,7 @@
       </h2>
       <br>
       <div id="timer" class="alert alert-info text-center">
-        <h4>Time Remaining: <span id="time">1:00</span></h4>
+        <h4>Time Remaining: <span id="time">30:00</span></h4>
     </div>
     </center>
     <form id="quizForm" action="{% url "quiz:calculate_score" %}" method="post">
@@ -109,7 +109,7 @@
   </div>
   <script>
     // Set the time limit (10 minutes in milliseconds)
-    const TIME_LIMIT = 1 * 60 * 1000;
+    const TIME_LIMIT = 30 * 60 * 1000;
     let timer;
     let startTime;
     
