@@ -1,0 +1,237 @@
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #F6F8FF;
+  color: #333;
+  line-height: 1.6;
+}
+
+.quiz-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.quiz-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 16px;
+  color: #7E69AB;
+}
+
+.quiz-subtitle {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #666;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 8px;
+  background-color: #e2e2e2;
+  border-radius: 4px;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #9b87f5;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* Quiz card */
+.quiz-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  animation: scale-in 0.2s ease-out;
+}
+
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.question {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+/* Option buttons */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  text-align: left;
+  background: none;
+  border: 2px solid #e2e2e2;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option:hover {
+  background-color: #E5DEFF;
+  border-color: #E5DEFF;
+}
+
+.option.selected {
+  border-color: #9b87f5;
+  background-color: #E5DEFF;
+}
+
+.option.correct {
+  border-color: #4CAF50;
+  background-color: #E8F5E9;
+}
+
+.option.incorrect {
+  border-color: #F44336;
+  background-color: #FFEBEE;
+}
+
+/* Navigation buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background-color: #9b87f5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: medium;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.button:hover {
+  background-color: #6E59A5;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Result screen */
+.result-circle {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 4px solid #9b87f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 32px auto;
+}
+
+.result-percentage {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.result-good {
+  color: #4CAF50;
+}
+
+.result-medium {
+  color: #FF9800;
+}
+
+.result-poor {
+  color: #F44336;
+}
+
+.result-stats {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result-feedback {
+  background-color: #E5DEFF;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* Hide elements */
+.hidden {
+  display: none;
+}
+.marked{
+  background-color: dodgerblue;
+  color: white;
+  border: 2px solid navy;
+}
+.add a{
+  text-decoration: none;
+  color: white;
+  font-size: 12px;
+}
+.add{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: blue;
+  position: fixed;
+  bottom: 5%;
+  right: 10%;
+  z-index: 20000;
+}
+
+.pagination{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.steps-link{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.current{
+  padding: 0 10px;
+}
